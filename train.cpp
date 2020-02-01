@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
 	dynet::Expression z2 = dynet::rectify(W2*z1 + b2);
 	dynet::Expression z3 = dynet::rectify(W3*z2 + b3);
 	dynet::Expression y_pred = W4*z3 + b4;
-	dynet::Expression loss_expr = dynet::squared_distance(y_pred, y);
+	dynet::Expression loss_expr = 0.1 * dynet::squared_distance(y_pred, y);
 	dynet::Expression sum_loss = dynet::mean_batches(loss_expr);
 	
 	//computation graphを描画
