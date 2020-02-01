@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.12)
+
+add_executable(read_teacher_data read_teacher_data.cpp)
+add_executable(make_graph make_graph.cpp)
+add_executable(train train.cpp)
+add_executable(test test.cpp)
+
+target_link_libraries(read_teacher_data fanda)
+target_link_libraries(make_graph fanda dynet pthread)
+target_link_libraries(train fanda dynet pthread gpop)
+target_link_libraries(test fanda dynet pthread)
