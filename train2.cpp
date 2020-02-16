@@ -35,11 +35,11 @@ int main(int argc, char* argv[])
 {
 	//dynet初期化
 	dynet::DynetParams params;
-	params.weight_decay = 0.0001;
+	//params.weight_decay = 0.1;
 	dynet::initialize(params);
 
 	//データ読み込み
-	CSV::CsvFile supervisor_data_csv("edit.csv");
+	CSV::CsvFile supervisor_data_csv("../edit.csv");
 	if (supervisor_data_csv.is_open()) {
 		std::cout << "||| csv file of supervisor is opened successfully" << std::endl;
 		std::cout << "||| csv file collumn size : " << supervisor_data_csv.collumn_size() << std::endl;
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 	//定数設定
 	const unsigned int MINIBATCH_SIZE = 8;	//ミニバッチサイズ
 	const unsigned int ITERATION = 850;		//１回に作成するミニバッチの数
-	const unsigned int EPOCH_SIZE = 5;		//ミニバッチの作成を行う回数
+	const unsigned int EPOCH_SIZE = 2;		//ミニバッチの作成を行う回数
 	const unsigned int INPUT_DIM = 18;		//入力データの次元
 	const unsigned int OUTPUT_DIM = 1;		//出力データの次元
 	const unsigned int L1_DIM = 15;
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
 	dynet::Expression z6 = dynet::rectify(W6*z5 + b6);
 	dynet::Expression z7 = dynet::rectify(W7*z6 + b7);
 	dynet::Expression y_pred = W8*z7;
-	dynet::Expression loss_expr = dynet::squared_distance(y_pred, y);
+	dynet::Expression loss_expr = 10 * dynet::squared_distance(y_pred, y);
 	dynet::Expression sum_loss = dynet::mean_batches(loss_expr);
 	
 	//computation graphを描画
@@ -157,9 +157,11 @@ int main(int argc, char* argv[])
 				//教師データから１行だけ読み出す
 				std::random_device rnd;
 				std::uniform_int_distribution<> uniform_dist(0, 2341);
-				auto line_vec0 = csv_line_to_vector(supervisor_data_csv, uniform_dist(rnd));
-				auto line_vec1 = extract_posexyz(supervisor_data_csv, uniform_dist(rnd)+1);
-				auto line_vec2 = extract_posexyz(supervisor_data_csv, uniform_dist(rnd)+2);
+				int index = uniform_dist(rnd);
+				std::cout << "random index " << index << std::endl;
+				auto line_vec0 = csv_line_to_vector(supervisor_data_csv, index);
+				auto line_vec1 = extract_posexyz(supervisor_data_csv, index+1);
+				auto line_vec2 = extract_posexyz(supervisor_data_csv, index+2);
 				//出力データ作成
 				y_value_ptr->push_back(line_vec0.back());
 				line_vec0.pop_back();
