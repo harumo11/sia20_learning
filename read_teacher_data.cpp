@@ -5,7 +5,7 @@ int main(int argc, char const* argv[])
 {
 	
 	//教師データの入ったcsvファイルを読み込む
-	CSV::CsvFile csv("summary.csv");
+	CSV::CsvFile csv("edit.csv");
 	if (csv.is_open()) {
 		std::cout << "||| the csv file of teacher data can be opened" << std::endl;
 	}
