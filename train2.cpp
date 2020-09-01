@@ -140,7 +140,7 @@ int main(int argc, char* argv[])
 
     //プロット準備
     Gpop::Series plot;
-    Gpop::Series e_plot;
+    Gpop::Series e_plot("temp loss");
     std::vector<double> loss_vec;
 
     //学習を実行

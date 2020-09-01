@@ -1,5 +1,7 @@
 // long normal broomの学習を行うプログラム．
 // 実際の環境で使用する
+// 圧力を加えたバージョン
+// ８層
 
 #include <Gpop/Series.hpp>
 #include <dynet/expr.h>
@@ -169,7 +171,7 @@ int main(int argc, char* argv[])
     // dynet定数
     // config1
     const int MINIBATCH_SIZE = 8; //ミニバッチのを構成するデータポイントの数
-    const int ITERATION = 1750; //全エポックを使い切る学習を何回行うかを決める数
+    const int ITERATION = 512; //全エポックを使い切る学習を何回行うかを決める数
     const int EPOCH_SIZE = 1750; //ミニバッチを何個作成するかを規定する数
     const int INPUT_LAYER_DIMENSION = 37;
     const int HIDEN_LAYER_DIMENSION = 20;
@@ -324,5 +326,9 @@ int main(int argc, char* argv[])
         validation_plot.plot(validation_error);
         validation_plot.pause();
     }
+
+    // モデルを保存
+    dynet::TextFileSaver saver("train3.model");
+    saver.save(parameter_collection);
     return 0;
 }
