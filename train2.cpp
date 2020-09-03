@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 	//パラメータ作成（入力以外）
 	dynet::ComputationGraph cg;
 	dynet::ParameterCollection model;
-	dynet::SimpleSGDTrainer trainer(model);
+	dynet::SimpleSGDTrainer trainer(model, 0.0002);
 	////L1
 	dynet::Parameter p_W1 = model.add_parameters({L1_DIM, INPUT_DIM});
 	dynet::Parameter p_b1 = model.add_parameters({L1_DIM});
@@ -187,10 +187,12 @@ int main(int argc, char* argv[])
 			cg.backward(sum_loss);
 			trainer.update();
 			loss_vec.push_back(loss);
+			plot.plot(loss);
+			plot.pause();
 		}
 	}
 
-	plot.plot(loss_vec);
+	//plot.plot(loss_vec);
 	plot.show();
 	std::cin.get();
 
