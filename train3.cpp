@@ -122,10 +122,10 @@ std::tuple<std::vector<dynet::real>, std::vector<dynet::real>> create_one_miniba
 int main(int argc, char* argv[])
 {
     // 設定
-    const std::string traingin_data_dir_path = "./long_normal_broom_training_data";
+    const std::string training_data_dir_path = "../long_normal_broom_training_data";
 
     // 教師データの成否データ読み込み
-    CSV::CsvFile training_data_state_file("./long_normal_broom_training_data/status.csv");
+    CSV::CsvFile training_data_state_file("../long_normal_broom_training_data/status.csv");
     if (!training_data_state_file.is_open()) {
         std::cout << "||| Could not opne the training state file" << std::endl;
         std::cout << "||| Exit" << std::endl;
@@ -145,10 +145,10 @@ int main(int argc, char* argv[])
     for (int i = 0; i < training_data_state_file.row_size(); i++) {
         const std::string trianing_status = training_data_state_file(i, 1).get_as_string();
         if (trianing_status == "TRUE") {
-            std::string csv_file_name = traingin_data_dir_path + "/log_" + std::to_string(i) + ".csv";
+            std::string csv_file_name = training_data_dir_path + "/log_" + std::to_string(i) + ".csv";
             training_data.emplace_back(CSV::CsvFile(csv_file_name));
         } else if (trianing_status == "VALIDATION") {
-            std::string csv_file_name = traingin_data_dir_path + "/log_" + std::to_string(i) + ".csv";
+            std::string csv_file_name = training_data_dir_path + "/log_" + std::to_string(i) + ".csv";
             validation_data.emplace_back(CSV::CsvFile(csv_file_name));
         }
     }
@@ -170,9 +170,9 @@ int main(int argc, char* argv[])
 
     // dynet定数
     // config1
-    const int MINIBATCH_SIZE = 8; //ミニバッチのを構成するデータポイントの数
-    const int ITERATION = 512; //全エポックを使い切る学習を何回行うかを決める数
-    const int EPOCH_SIZE = 1750; //ミニバッチを何個作成するかを規定する数
+    const int MINIBATCH_SIZE = 64; //ミニバッチのを構成するデータポイントの数
+    const int ITERATION = 1; //全エポックを使い切る学習を何回行うかを決める数
+    const int EPOCH_SIZE = 400*ITERATION; //ミニバッチを何個作成するかを規定する数
     const int INPUT_LAYER_DIMENSION = 37;
     const int HIDEN_LAYER_DIMENSION = 20;
     const int OUTPUT_LAYER_DIMENSION = 6;
@@ -182,6 +182,7 @@ int main(int argc, char* argv[])
     dynet::DynetParams params;
     //params.autobatch = 0; // 自動ミニバッチ機能
     params.weight_decay = 0.0001; // 正則化
+	params.cpu_requested = true;
     dynet::initialize(params);
 
     // dynet最適化手法の選択
@@ -293,6 +294,7 @@ int main(int argc, char* argv[])
             y_value_ptr->clear();
 
             // dynet ミニバッチ１つを作成し代入
+			std::cout << "|||\t Debug | training_data.size() : " << training_data.size() << std::endl;
             auto [input_x, output_y] = create_one_minibatch(training_data, MINIBATCH_SIZE);
             x_value_ptr->assign(input_x.begin(), input_x.end());
             y_value_ptr->assign(output_y.begin(), output_y.end());
