@@ -265,7 +265,7 @@ int main(int argc, char* argv[])
     dynet::Expression z7 = dynet::rectify(W7 * z6 + b7);
     dynet::Expression y_pred = W8 * z7 + b8;
     dynet::Expression loss_expr = dynet::squared_distance(y_pred, y);
-    dynet::Expression mean_loss = dynet::mean_batches(loss_expr);
+    dynet::Expression mean_loss = dynet::sum_batches(loss_expr);
 
     // dynetグラフ描画
     std::cout << "----------------------------------------------------------" << std::endl;
@@ -301,7 +301,7 @@ int main(int argc, char* argv[])
 
             // フォワードプロパゲーション
             double error = dynet::as_scalar(computation_graph.forward(mean_loss));
-            std::cout << "||| mean_loss " << dynet::as_scalar(mean_loss.value()) << std::endl;
+            std::cout << "||| sum_loss " << dynet::as_scalar(mean_loss.value()) << std::endl;
 
             // バックプロパゲーション
             computation_graph.backward(mean_loss);
