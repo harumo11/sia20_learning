@@ -15,6 +15,10 @@ int main(int argc, char const* argv[])
     std::cout << "Lo > 400 : " << Lo << std::endl;
 
     // When 0 <= Li <= 400, return -1 <= Lo <= +1;
+    Li = 1;
+    Lo = leptorino::cliping(Li);
+    std::cout << "0 <= Lo <= 400 : " << Lo << std::endl;
+
     Li = 200;
     Lo = leptorino::cliping(Li);
     std::cout << "0 <= Lo <= 400 : " << Lo << std::endl;
