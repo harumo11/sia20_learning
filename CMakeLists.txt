@@ -13,6 +13,7 @@ add_executable(train3 train3.cpp)
 add_executable(train3_1 train3_1.cpp)
 add_executable(train3_2 train3_2.cpp)
 add_executable(train4 train4.cpp)
+add_executable(test_cliping_leptorino test_cliping_leptorino.cpp)
 #add_executable(concatenate_csv concatenate_csv.cpp)
 
 #target_link_libraries(read_teacher_data fanda)

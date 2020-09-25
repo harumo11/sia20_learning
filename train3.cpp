@@ -172,7 +172,7 @@ int main(int argc, char* argv[])
     // config1
     const int MINIBATCH_SIZE = 64; //ミニバッチのを構成するデータポイントの数
     const int ITERATION = 1; //全エポックを使い切る学習を何回行うかを決める数
-    const int EPOCH_SIZE = 400*ITERATION; //ミニバッチを何個作成するかを規定する数
+    const int EPOCH_SIZE = 400 * ITERATION; //ミニバッチを何個作成するかを規定する数
     const int INPUT_LAYER_DIMENSION = 37;
     const int HIDEN_LAYER_DIMENSION = 20;
     const int OUTPUT_LAYER_DIMENSION = 6;
@@ -182,7 +182,7 @@ int main(int argc, char* argv[])
     dynet::DynetParams params;
     //params.autobatch = 0; // 自動ミニバッチ機能
     params.weight_decay = 0.0001; // 正則化
-	params.cpu_requested = true;
+    params.cpu_requested = true;
     dynet::initialize(params);
 
     // dynet最適化手法の選択
@@ -294,7 +294,7 @@ int main(int argc, char* argv[])
             y_value_ptr->clear();
 
             // dynet ミニバッチ１つを作成し代入
-			std::cout << "|||\t Debug | training_data.size() : " << training_data.size() << std::endl;
+            std::cout << "|||\t Debug | training_data.size() : " << training_data.size() << std::endl;
             auto [input_x, output_y] = create_one_minibatch(training_data, MINIBATCH_SIZE);
             x_value_ptr->assign(input_x.begin(), input_x.end());
             y_value_ptr->assign(output_y.begin(), output_y.end());
