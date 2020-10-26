@@ -3,7 +3,8 @@
 // 圧力を加えたバージョン
 // ８層
 
-#include "cliping_leptorino.hpp"
+#include "/home/robot/catkin_ws/src/sia20/sia20_control/src/cliping_leptorino.hpp"
+#include "/home/robot/program/cpp/sia20_learning/clipping_data.hpp"
 #include <Gpop/Series.hpp>
 #include <dynet/expr.h>
 #include <dynet/io.h>
@@ -46,25 +47,56 @@ std::tuple<std::vector<dynet::real>, std::vector<dynet::real>> create_one_traing
 
     std::vector<dynet::real> data_point_x;
     // end effector position(t)
-    for (int i = 32; i < 38; i++) {
-        data_point_x.push_back(raw_data_points(2, i).get_as_double());
-    }
+    //for (int i = 32; i < 38; i++) {
+    //    data_point_x.push_back(raw_data_points(2, i).get_as_double());
+    //}
+	data_point_x.push_back(pose_state_x::clipping(raw_data_points(2,32).get_as_double()));	//pose_state_x
+	data_point_x.push_back(pose_state_y::clipping(raw_data_points(2,33).get_as_double()));	//pose_state_y
+	data_point_x.push_back(pose_state_z::clipping(raw_data_points(2,34).get_as_double()));	//pose_state_z
+	data_point_x.push_back(pose_state_r::clipping(raw_data_points(2,35).get_as_double()));	//pose_state_r
+	data_point_x.push_back(pose_state_p::clipping(raw_data_points(2,36).get_as_double()));	//pose_state_p
+	data_point_x.push_back(pose_state_w::clipping(raw_data_points(2,37).get_as_double()));	//pose_state_w
+
     // end effector position(t-1)
-    for (int i = 32; i < 38; i++) {
-        data_point_x.push_back(raw_data_points(1, i).get_as_double());
-    }
+    //for (int i = 32; i < 38; i++) {
+    //    data_point_x.push_back(raw_data_points(1, i).get_as_double());
+    //}
+	data_point_x.push_back(pose_state_x::clipping(raw_data_points(1,32).get_as_double()));	//pose_state_x
+	data_point_x.push_back(pose_state_y::clipping(raw_data_points(1,33).get_as_double()));	//pose_state_y
+	data_point_x.push_back(pose_state_z::clipping(raw_data_points(1,34).get_as_double()));	//pose_state_z
+	data_point_x.push_back(pose_state_r::clipping(raw_data_points(1,35).get_as_double()));	//pose_state_r
+	data_point_x.push_back(pose_state_p::clipping(raw_data_points(1,36).get_as_double()));	//pose_state_p
+	data_point_x.push_back(pose_state_w::clipping(raw_data_points(1,37).get_as_double()));	//pose_state_w
     // end effector position(t-2)
-    for (int i = 32; i < 38; i++) {
-        data_point_x.push_back(raw_data_points(0, i).get_as_double());
-    }
+    //for (int i = 32; i < 38; i++) {
+    //    data_point_x.push_back(raw_data_points(0, i).get_as_double());
+    //}
+	data_point_x.push_back(pose_state_x::clipping(raw_data_points(0,32).get_as_double()));	//pose_state_x
+	data_point_x.push_back(pose_state_y::clipping(raw_data_points(0,33).get_as_double()));	//pose_state_y
+	data_point_x.push_back(pose_state_z::clipping(raw_data_points(0,34).get_as_double()));	//pose_state_z
+	data_point_x.push_back(pose_state_r::clipping(raw_data_points(0,35).get_as_double()));	//pose_state_r
+	data_point_x.push_back(pose_state_p::clipping(raw_data_points(0,36).get_as_double()));	//pose_state_p
+	data_point_x.push_back(pose_state_w::clipping(raw_data_points(0,37).get_as_double()));	//pose_state_w
     // candy position(t)
-    for (int i = 0; i < 6; i++) {
-        data_point_x.push_back(raw_data_points(2, i).get_as_double());
-    }
+    //for (int i = 0; i < 6; i++) {
+    //    data_point_x.push_back(raw_data_points(2, i).get_as_double());
+    //}
+	data_point_x.push_back(dirt_x::clipping(raw_data_points(2,0).get_as_double()));
+	data_point_x.push_back(dirt_y::clipping(raw_data_points(2,1).get_as_double()));
+	data_point_x.push_back(dirt_z::clipping(raw_data_points(2,2).get_as_double()));
+	data_point_x.push_back(                 raw_data_points(2,3).get_as_double());
+	data_point_x.push_back(                 raw_data_points(2,4).get_as_double());
+	data_point_x.push_back(                 raw_data_points(2,5).get_as_double());
     // broom position(t)
-    for (int i = 12; i < 18; i++) {
-        data_point_x.push_back(raw_data_points(2, i).get_as_double());
-    }
+    //for (int i = 12; i < 18; i++) {
+    //    data_point_x.push_back(raw_data_points(2, i).get_as_double());
+    //}
+    data_point_x.push_back(broom_x::clipping(raw_data_points(2, 12).get_as_double()));
+    data_point_x.push_back(broom_y::clipping(raw_data_points(2, 13).get_as_double()));
+    data_point_x.push_back(broom_z::clipping(raw_data_points(2, 14).get_as_double()));
+    data_point_x.push_back(broom_r::clipping(raw_data_points(2, 15).get_as_double()));
+    data_point_x.push_back(broom_p::clipping(raw_data_points(2, 16).get_as_double()));
+    data_point_x.push_back(broom_w::clipping(raw_data_points(2, 17).get_as_double()));
     // dustpan position(t)
     for (int i = 6; i < 12; i++) {
         data_point_x.push_back(raw_data_points(2, i).get_as_double());
@@ -125,10 +157,10 @@ std::tuple<std::vector<dynet::real>, std::vector<dynet::real>> create_one_miniba
 int main(int argc, char* argv[])
 {
     // 設定
-    const std::string training_data_dir_path = "../long_normal_broom_training_data";
+    const std::string training_data_dir_path = "../log_demo25";
 
     // 教師データの成否データ読み込み
-    CSV::CsvFile training_data_state_file("../long_normal_broom_training_data/status.csv");
+    CSV::CsvFile training_data_state_file(training_data_dir_path + "/status.csv");
     if (!training_data_state_file.is_open()) {
         std::cout << "||| Could not opne the training state file" << std::endl;
         std::cout << "||| Exit" << std::endl;
@@ -136,7 +168,7 @@ int main(int argc, char* argv[])
     } else {
         std::cout << "||| Open the training state file successfully" << std::endl;
         std::cout << "||| CSV Colmun size : " << training_data_state_file.column_size() << std::endl;
-        std::cout << "||| CSV Row size : " << training_data_state_file.column_size() << std::endl;
+        std::cout << "||| CSV Row size : " << training_data_state_file.row_size() << std::endl;
         //training_data_state_file.print(); // 学習の成否を記録したファイルの中身を表示
     }
 
@@ -184,7 +216,7 @@ int main(int argc, char* argv[])
     // config2
     dynet::DynetParams params;
     //params.autobatch = 0; // 自動ミニバッチ機能
-    //params.weight_decay = 0.000001; // 正則化
+    //params.weight_decay = 0.0001; // 正則化
     params.cpu_requested = true;
     dynet::initialize(params);
 
@@ -333,7 +365,7 @@ int main(int argc, char* argv[])
     }
 
     // モデルを保存
-    dynet::TextFileSaver saver("train3.model");
+    dynet::TextFileSaver saver("cliped_train_m2_w001_demo_25.model");
     saver.save(parameter_collection);
     return 0;
 }
